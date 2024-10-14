@@ -19,19 +19,22 @@ build/strqueue_nodbg.o: strqueue.cpp
 build/%.o: %.c
 	$(cc) $(CFLAGS) -c -o $@ $<
 
-build/%.o: tests/%.cpp
+build/%.o: %.cpp
 	$(++) $(CPPFLAGS) -c -o $@ $<
 
 strqueue_test_1_dbg: build/strqueue_test_1.o build/strqueue_dbg.o
 	$(++) -o build/$@ $^
 
-strqueue_test_2_dbg_a: strqueue_test_2.o strqueue_dbg.o
+strqueue_test_1_nodbg: build/strqueue_test_1.o build/strqueue_nodbg.o
 	$(++) -o build/$@ $^
 
-strqueue_test_2_dbg_b: strqueue_dbg.o strqueue_test_2.o
+strqueue_test_2_dbg_a: build/strqueue_test_2.o build/strqueue_dbg.o
 	$(++) -o build/$@ $^
 
-strqueue_test_2_nodbg: strqueue_test_2.o strqueue_nodbg.o
+strqueue_test_2_dbg_b: build/strqueue_dbg.o build/strqueue_test_2.o
+	$(++) -o build/$@ $^
+
+strqueue_test_2_nodbg: build/strqueue_test_2.o build/strqueue_nodbg.o
 	$(++) -o build/$@ $^
 
 clean:

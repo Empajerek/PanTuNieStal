@@ -13,7 +13,7 @@ namespace {
     if (s1 == s2)
       return true;
 
-    if (s1 == NULL || s2 == NULL)
+    if (s1 == nullptr || s2 == nullptr)
       return false;
 
     if (strcmp(s1, s2) == 0)
@@ -29,7 +29,7 @@ namespace {
   }
 
   unsigned long id = test();
-}
+} // namespace
 
 int main() {
   const char* str = ::cxx::strqueue_get_at(id, 0);
