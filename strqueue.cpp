@@ -60,7 +60,6 @@ namespace {
 unsigned long strqueue_new() {
     DEBUG_START();
     static unsigned long id = 0;
-    std::unordered_map<unsigned long, std::deque<std::string>> queues;
     queues[id] = std::deque<std::string>();
     DEBUG_RETURN(id);
     return id++;
