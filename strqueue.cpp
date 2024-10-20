@@ -6,7 +6,7 @@
 #include <cstddef>
 
 #undef NDEBUG
-
+using StringQueue = std::unordered_map<unsigned long, std::deque<std::string>>;
 namespace cxx {
 
 namespace {
@@ -32,6 +32,7 @@ namespace {
         return std::to_string(arg);
     }
 
+    // Recursively printing all of the arguments.
     template<typename T, typename... Arg>
     std::string argToStr(const T& arg, const Arg&... rest) {
         return argToStr(arg) + ", " + argToStr(rest...);
@@ -54,7 +55,7 @@ namespace {
     #define DEBUG_RETURN(...) {}
 #endif
 
-    std::unordered_map<unsigned long, std::deque<std::string>> queues;
+    StringQueue queues;
 } // namespace
 
 unsigned long strqueue_new() {
