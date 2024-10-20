@@ -188,7 +188,7 @@ int strqueue_comp(unsigned long id1, unsigned long id2) {
 
     size_t min_size = std::min(size1, size2);
 
-    for (size_t i = 0; i < min_size; ++i) {
+    for (size_t i = 0; i < min_size; i++) {
         int cmp = queue1[i].compare(queue2[i]);
         if (cmp < 0) {
             DEBUG_RETURN(-1);
