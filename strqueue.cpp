@@ -35,7 +35,9 @@ namespace {
         return argToStr(arg) + ", " + argToStr(rest...);
     }
 
-    std::string returnStr() { return " done"; }
+    std::string returnStr() {
+        return " done";
+    }
 
     template<typename Arg>
     std::string returnStr(Arg arg) {
@@ -122,13 +124,13 @@ const char* strqueue_get_at(unsigned long id, size_t position) {
     auto iter = queues.find(id);
     if (iter == queues.end()) {
         DEBUG_DNE(id);
-        DEBUG_RETURN((const char*) 0);
+        DEBUG_RETURN((const char*) NULL);
         return NULL;
     }
 
     if (iter->second.size() <= position) {
         DEBUG_DNC(id, position);
-        DEBUG_RETURN((const char*) 0);
+        DEBUG_RETURN((const char*) NULL);
         return NULL;
     }
 
