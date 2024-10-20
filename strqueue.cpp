@@ -7,6 +7,8 @@
 
 #undef NDEBUG
 
+namespace cxx {
+
 namespace {
 #ifndef NDEBUG
     #define DEBUG_FAILED() std::cerr << __func__ << " failed \n"
@@ -90,6 +92,7 @@ void strqueue_insert_at(unsigned long id, size_t position, const char* str) {
         DEBUG_DNE(id);
         return;
     }
+
     if (str == NULL) {
         DEBUG_FAILED();
         return;
@@ -157,13 +160,4 @@ int strqueue_comp(unsigned long id1, unsigned long id2) {
     return 0;
 }
 
-namespace cxx {
-    unsigned long strqueue_new() { return ::strqueue_new(); }
-    void strqueue_delete(unsigned long id) { ::strqueue_delete(id); }
-    size_t strqueue_size(unsigned long id) { return ::strqueue_size(id); }
-    void strqueue_insert_at(unsigned long id, size_t position, const char* str) { ::strqueue_insert_at(id, position, str); }
-    void strqueue_remove_at(unsigned long id, size_t position) { ::strqueue_remove_at(id, position); }
-    const char* strqueue_get_at(unsigned long id, size_t position) { return ::strqueue_get_at(id, position); }
-    void strqueue_clear(unsigned long id) { ::strqueue_clear(id); }
-    int strqueue_comp(unsigned long id1, unsigned long id2) { return ::strqueue_comp(id1, id2); }
-}
+} // namespace cxx
