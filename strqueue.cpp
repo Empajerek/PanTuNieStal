@@ -5,17 +5,17 @@
 #include <string>
 #include <cstddef>
 
-#undef NDEBUG
+using StringQueue = std::unordered_map<unsigned long, std::deque<std::string>>;
 
 namespace cxx {
 
 namespace {
 #ifndef NDEBUG
-    #define DEBUG_FAILED() std::cerr << __func__ << " failed \n"
-    #define DEBUG_DNE(x) std::cerr << __func__ << ": queue " << x << " does not exist \n"
-    #define DEBUG_DNC(x, y) std::cerr << __func__ << ": queue " << x << " does not contain string at position " << y << " \n"
-    #define DEBUG_START(...) std::cerr << __func__ << "(" << argToStr(__VA_ARGS__) << ") \n"
-    #define DEBUG_RETURN(x) std::cerr << __func__ << returnStr(x) << " \n"
+    #define DEBUG_FAILED() cerr() << __func__ << " failed\n"
+    #define DEBUG_DNE(x) cerr() << __func__ << ": queue " << x << " does not exist\n"
+    #define DEBUG_DNC(x, y) cerr() << __func__ << ": queue " << x << " does not contain string at position " << y << "\n"
+    #define DEBUG_START(...) cerr() << __func__ << "(" << argToStr(__VA_ARGS__) << ")\n"
+    #define DEBUG_RETURN(x) cerr() << __func__ << returnStr(x) << "\n"
 
     std::string argToStr() {
         return "";
@@ -32,6 +32,7 @@ namespace {
         return std::to_string(arg);
     }
 
+    // Recursively printing all of the arguments.
     template<typename T, typename... Arg>
     std::string argToStr(const T& arg, const Arg&... rest) {
         return argToStr(arg) + ", " + argToStr(rest...);
@@ -46,6 +47,15 @@ namespace {
         return " returns " + argToStr(arg);
     }
 
+    static std::ostream& cerr() {
+        static bool is_init = false;
+        if (!is_init) {
+            is_init = true;
+            static std::ios_base::Init __io_init;
+        }
+        return std::cerr;
+    }
+
 #else
     #define DEBUG_FAILED(...) {}
     #define DEBUG_DNE(...) {}
@@ -54,29 +64,31 @@ namespace {
     #define DEBUG_RETURN(...) {}
 #endif
 
-    std::unordered_map<unsigned long, std::deque<std::string>> queues;
+    static StringQueue& get_queue() {
+        static StringQueue queue;
+        return queue;
+    }
 } // namespace
 
 unsigned long strqueue_new() {
     DEBUG_START();
     static unsigned long id = 0;
-    std::unordered_map<unsigned long, std::deque<std::string>> queues;
-    queues[id] = std::deque<std::string>();
+    get_queue()[id] = std::deque<std::string>();
     DEBUG_RETURN(id);
     return id++;
 }
 
 void strqueue_delete(unsigned long id) {
     DEBUG_START(id);
-    queues.erase(id);
+    get_queue().erase(id);
     DEBUG_RETURN();
 }
 
 size_t strqueue_size(unsigned long id) {
     DEBUG_START(id);
-    const auto iter = queues.find(id);
+    const auto iter = get_queue().find(id);
     size_t size;
-    if (iter == queues.end()) {
+    if (iter == get_queue().end()) {
         DEBUG_DNE(id);
         size = 0;
     } else {
@@ -88,8 +100,8 @@ size_t strqueue_size(unsigned long id) {
 
 void strqueue_insert_at(unsigned long id, size_t position, const char* str) {
     DEBUG_START(id, position, str);
-    auto iter = queues.find(id);
-    if (iter == queues.end()) {
+    auto iter = get_queue().find(id);
+    if (iter == get_queue().end()) {
         DEBUG_DNE(id);
         return;
     }
@@ -108,8 +120,8 @@ void strqueue_insert_at(unsigned long id, size_t position, const char* str) {
 
 void strqueue_remove_at(unsigned long id, size_t position) {
     DEBUG_START(id, position);
-    auto iter = queues.find(id);
-    if (iter == queues.end()) {
+    auto iter = get_queue().find(id);
+    if (iter == get_queue().end()) {
         DEBUG_DNE(id);
         return;
     }
@@ -125,28 +137,23 @@ void strqueue_remove_at(unsigned long id, size_t position) {
 
 const char* strqueue_get_at(unsigned long id, size_t position) {
     DEBUG_START(id, position);
-    auto iter = queues.find(id);
-    if (iter == queues.end()) {
+    auto iter = get_queue().find(id);
+    const char* elem = (const char*) NULL;
+    if (iter == get_queue().end()) {
         DEBUG_DNE(id);
-        DEBUG_RETURN((const char*) NULL);
-        return NULL;
-    }
-
-    if (iter->second.size() <= position) {
+    } else if (iter->second.size() <= position) {
         DEBUG_DNC(id, position);
-        DEBUG_RETURN((const char*) NULL);
-        return NULL;
+    } else {
+        elem = iter->second[position].c_str();
     }
-
-    const char* elem = iter->second[position].c_str();
     DEBUG_RETURN(elem);
     return elem;
 }
 
 void strqueue_clear(unsigned long id) {
     DEBUG_START(id);
-    auto iter = queues.find(id);
-    if (iter == queues.end()) {
+    auto iter = get_queue().find(id);
+    if (iter == get_queue().end()) {
         DEBUG_DNE(id);
         return;
     }
@@ -156,9 +163,37 @@ void strqueue_clear(unsigned long id) {
 }
 
 int strqueue_comp(unsigned long id1, unsigned long id2) {
-    (void) id1;
-    (void) id2;
-    return 0;
+    short ret;
+    DEBUG_START(id1, id2);
+
+    auto iter1 = get_queue().find(id1);
+    auto iter2 = get_queue().find(id2);
+
+    const auto& queue1 = iter1->second;
+    const auto& queue2 = iter2->second;
+
+    if (iter1 == get_queue().end() && iter2 == get_queue().end()) {
+        DEBUG_DNE(id1);
+        DEBUG_DNE(id2);
+        ret = 0;
+    } else if (iter1 == get_queue().end()) {
+        DEBUG_DNE(id1);
+        ret = queue2.size() ? -1 : 0;
+    } else if (iter2 == get_queue().end()) {
+        DEBUG_DNE(id2);
+        ret = queue1.size() ? 1 : 0;
+    } else {
+        // Both get_queue() exist and we begin to compare them lexicographically.
+        if (queue1 < queue2)
+            ret = -1;
+        else if (queue1 > queue2)
+            ret = 1;
+        else
+            ret = 0;
+    }
+
+    DEBUG_RETURN(ret);
+    return ret;
 }
 
 } // namespace cxx
