@@ -180,7 +180,7 @@ int strqueue_comp(unsigned long id1, unsigned long id2) {
         // Both get_queue() exist and we begin to compare them lexicographically.
         if (queue1 < queue2)
             ret = -1;
-        else if(queue1 > queue2)
+        else if (queue1 > queue2)
             ret = 1;
         else
             ret = 0;
