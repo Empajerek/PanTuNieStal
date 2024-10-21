@@ -7,6 +7,7 @@
 
 #undef NDEBUG
 using StringQueue = std::unordered_map<unsigned long, std::deque<std::string>>;
+
 namespace cxx {
 
 namespace {
@@ -156,7 +157,7 @@ void strqueue_clear(unsigned long id) {
 }
 
 int strqueue_comp(unsigned long id1, unsigned long id2) {
-  DEBUG_START(id1, id2);
+    DEBUG_START(id1, id2);
 
     auto iter1 = queues.find(id1);
     auto iter2 = queues.find(id2);
@@ -194,8 +195,7 @@ int strqueue_comp(unsigned long id1, unsigned long id2) {
         if (cmp < 0) {
             DEBUG_RETURN(-1);
             return -1;
-        }
-        else if (cmp > 0) {
+        } else if (cmp > 0) {
             DEBUG_RETURN(1);
             return 1;
         }
