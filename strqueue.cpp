@@ -56,28 +56,31 @@ namespace {
     #define DEBUG_RETURN(...) {}
 #endif
 
-    StringQueue queues;
+    static StringQueue get_queue() {
+        static StringQueue queue;
+        return queue;
+    }
 } // namespace
 
 unsigned long strqueue_new() {
     DEBUG_START();
     static unsigned long id = 0;
-    queues[id] = std::deque<std::string>();
+    get_queue()[id] = std::deque<std::string>();
     DEBUG_RETURN(id);
     return id++;
 }
 
 void strqueue_delete(unsigned long id) {
     DEBUG_START(id);
-    queues.erase(id);
+    get_queue().erase(id);
     DEBUG_RETURN();
 }
 
 size_t strqueue_size(unsigned long id) {
     DEBUG_START(id);
-    const auto iter = queues.find(id);
+    const auto iter = get_queue().find(id);
     size_t size;
-    if (iter == queues.end()) {
+    if (iter == get_queue().end()) {
         DEBUG_DNE(id);
         size = 0;
     } else {
@@ -89,8 +92,8 @@ size_t strqueue_size(unsigned long id) {
 
 void strqueue_insert_at(unsigned long id, size_t position, const char* str) {
     DEBUG_START(id, position, str);
-    auto iter = queues.find(id);
-    if (iter == queues.end()) {
+    auto iter = get_queue().find(id);
+    if (iter == get_queue().end()) {
         DEBUG_DNE(id);
         return;
     }
@@ -109,8 +112,8 @@ void strqueue_insert_at(unsigned long id, size_t position, const char* str) {
 
 void strqueue_remove_at(unsigned long id, size_t position) {
     DEBUG_START(id, position);
-    auto iter = queues.find(id);
-    if (iter == queues.end()) {
+    auto iter = get_queue().find(id);
+    if (iter == get_queue().end()) {
         DEBUG_DNE(id);
         return;
     }
@@ -126,9 +129,9 @@ void strqueue_remove_at(unsigned long id, size_t position) {
 
 const char* strqueue_get_at(unsigned long id, size_t position) {
     DEBUG_START(id, position);
-    auto iter = queues.find(id);
+    auto iter = get_queue().find(id);
     const char* elem = (const char*) NULL;
-    if (iter == queues.end())
+    if (iter == get_queue().end())
         DEBUG_DNE(id);
     else if (iter->second.size() <= position)
         DEBUG_DNC(id, position);
@@ -140,8 +143,8 @@ const char* strqueue_get_at(unsigned long id, size_t position) {
 
 void strqueue_clear(unsigned long id) {
     DEBUG_START(id);
-    auto iter = queues.find(id);
-    if (iter == queues.end()) {
+    auto iter = get_queue().find(id);
+    if (iter == get_queue().end()) {
         DEBUG_DNE(id);
         return;
     }
@@ -151,32 +154,32 @@ void strqueue_clear(unsigned long id) {
 }
 
 int strqueue_comp(unsigned long id1, unsigned long id2) {
-    short ret;    
+    short ret;
     DEBUG_START(id1, id2);
 
-    auto iter1 = queues.find(id1);
-    auto iter2 = queues.find(id2);
+    auto iter1 = get_queue().find(id1);
+    auto iter2 = get_queue().find(id2);
 
-    if (iter1 == queues.end() && iter2 == queues.end()) {
+    if (iter1 == get_queue().end() && iter2 == get_queue().end()) {
         DEBUG_DNE(id1);
         DEBUG_DNE(id2);
         ret = 0;
-    } else if (iter1 == queues.end()) {
+    } else if (iter1 == get_queue().end()) {
         DEBUG_DNE(id1);
         ret = -1;
-    } else if (iter2 == queues.end()) {
+    } else if (iter2 == get_queue().end()) {
         DEBUG_DNE(id2);
         ret = 1;
     } else {
-        // Both queues exist and we begin to compare them lexicographically. 
+        // Both get_queue() exist and we begin to compare them lexicographically.
         const auto& queue1 = iter1->second;
         const auto& queue2 = iter2->second;
-        
+
         if (queue1 < queue2)
             ret = -1;
         else if(queue1 > queue2)
             ret = 1;
-        else 
+        else
             ret = 0;
     }
 
