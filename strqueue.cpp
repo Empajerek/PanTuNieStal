@@ -5,7 +5,6 @@
 #include <string>
 #include <cstddef>
 
-#undef NDEBUG
 using StringQueue = std::unordered_map<unsigned long, std::deque<std::string>>;
 
 namespace cxx {
@@ -163,19 +162,16 @@ int strqueue_comp(unsigned long id1, unsigned long id2) {
     const auto& queue1 = iter1->second;
     const auto& queue2 = iter2->second;
 
-    if (
-    (iter1 == get_queue().end() || !queue1.size()) && 
-    (iter2 == get_queue().end() || !queue2.size())
-    ) {
+    if (iter1 == get_queue().end() && iter2 == get_queue().end()) {
         DEBUG_DNE(id1);
         DEBUG_DNE(id2);
         ret = 0;
     } else if (iter1 == get_queue().end()) {
         DEBUG_DNE(id1);
-        ret = -1;
+        ret = queue2.size() ? -1 : 0;
     } else if (iter2 == get_queue().end()) {
         DEBUG_DNE(id2);
-        ret = 1;
+        ret = queue1.size() ? 1 : 0;
     } else {
         // Both get_queue() exist and we begin to compare them lexicographically.
         if (queue1 < queue2)
