@@ -127,19 +127,13 @@ void strqueue_remove_at(unsigned long id, size_t position) {
 const char* strqueue_get_at(unsigned long id, size_t position) {
     DEBUG_START(id, position);
     auto iter = queues.find(id);
-    if (iter == queues.end()) {
+    const char* elem = (const char*) NULL;
+    if (iter == queues.end())
         DEBUG_DNE(id);
-        DEBUG_RETURN((const char*) NULL);
-        return NULL;
-    }
-
-    if (iter->second.size() <= position) {
+    else if (iter->second.size() <= position)
         DEBUG_DNC(id, position);
-        DEBUG_RETURN((const char*) NULL);
-        return NULL;
-    }
-
-    const char* elem = iter->second[position].c_str();
+    else
+        elem = iter->second[position].c_str();
     DEBUG_RETURN(elem);
     return elem;
 }
@@ -181,7 +175,7 @@ int strqueue_comp(unsigned long id1, unsigned long id2) {
         return 1;
     }
 
-    // Both queues exist and we begin to compare them lexicographically. 
+    // Both queues exist and we begin to compare them lexicographically.
     const auto& queue1 = iter1->second;
     const auto& queue2 = iter2->second;
 
