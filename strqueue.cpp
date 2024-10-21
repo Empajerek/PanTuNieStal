@@ -11,11 +11,11 @@ namespace cxx {
 
 namespace {
 #ifndef NDEBUG
-    #define DEBUG_FAILED() std::cerr << __func__ << " failed \n"
-    #define DEBUG_DNE(x) std::cerr << __func__ << ": queue " << x << " does not exist \n"
-    #define DEBUG_DNC(x, y) std::cerr << __func__ << ": queue " << x << " does not contain string at position " << y << " \n"
-    #define DEBUG_START(...) std::cerr << __func__ << "(" << argToStr(__VA_ARGS__) << ") \n"
-    #define DEBUG_RETURN(x) std::cerr << __func__ << returnStr(x) << " \n"
+    #define DEBUG_FAILED() cerr() << __func__ << " failed\n"
+    #define DEBUG_DNE(x) cerr() << __func__ << ": queue " << x << " does not exist\n"
+    #define DEBUG_DNC(x, y) cerr() << __func__ << ": queue " << x << " does not contain string at position " << y << "\n"
+    #define DEBUG_START(...) cerr() << __func__ << "(" << argToStr(__VA_ARGS__) << ")\n"
+    #define DEBUG_RETURN(x) cerr() << __func__ << returnStr(x) << "\n"
 
     std::string argToStr() {
         return "";
@@ -45,6 +45,15 @@ namespace {
     template<typename Arg>
     std::string returnStr(Arg arg) {
         return " returns " + argToStr(arg);
+    }
+
+    static std::ostream& cerr() {
+        static bool is_init = false;
+        if (!is_init) {
+            is_init = true;
+            static std::ios_base::Init __io_init;
+        }
+        return std::cerr;
     }
 
 #else
@@ -130,12 +139,13 @@ const char* strqueue_get_at(unsigned long id, size_t position) {
     DEBUG_START(id, position);
     auto iter = get_queue().find(id);
     const char* elem = (const char*) NULL;
-    if (iter == get_queue().end())
+    if (iter == get_queue().end()) {
         DEBUG_DNE(id);
-    else if (iter->second.size() <= position)
+    } else if (iter->second.size() <= position) {
         DEBUG_DNC(id, position);
-    else
+    } else {
         elem = iter->second[position].c_str();
+    }
     DEBUG_RETURN(elem);
     return elem;
 }
