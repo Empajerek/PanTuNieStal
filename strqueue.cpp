@@ -151,6 +151,7 @@ void strqueue_clear(unsigned long id) {
 }
 
 int strqueue_comp(unsigned long id1, unsigned long id2) {
+    short ret;    
     DEBUG_START(id1, id2);
 
     auto iter1 = queues.find(id1);
@@ -159,54 +160,28 @@ int strqueue_comp(unsigned long id1, unsigned long id2) {
     if (iter1 == queues.end() && iter2 == queues.end()) {
         DEBUG_DNE(id1);
         DEBUG_DNE(id2);
-        DEBUG_RETURN(0);
-        return 0;
-    }
-
-    if (iter1 == queues.end()) {
+        ret = 0;
+    } else if (iter1 == queues.end()) {
         DEBUG_DNE(id1);
-        DEBUG_RETURN(-1);
-        return -1;
-    }
-
-    if (iter2 == queues.end()) {
+        ret = -1;
+    } else if (iter2 == queues.end()) {
         DEBUG_DNE(id2);
-        DEBUG_RETURN(1);
-        return 1;
+        ret = 1;
+    } else {
+        // Both queues exist and we begin to compare them lexicographically. 
+        const auto& queue1 = iter1->second;
+        const auto& queue2 = iter2->second;
+        
+        if (queue1 < queue2)
+            ret = -1;
+        else if(queue1 > queue2)
+            ret = 1;
+        else 
+            ret = 0;
     }
 
-    // Both queues exist and we begin to compare them lexicographically.
-    const auto& queue1 = iter1->second;
-    const auto& queue2 = iter2->second;
-
-    size_t size1 = queue1.size();
-    size_t size2 = queue2.size();
-
-    size_t min_size = std::min(size1, size2);
-
-    for (size_t i = 0; i < min_size; i++) {
-        int cmp = queue1[i].compare(queue2[i]);
-        if (cmp < 0) {
-            DEBUG_RETURN(-1);
-            return -1;
-        } else if (cmp > 0) {
-            DEBUG_RETURN(1);
-            return 1;
-        }
-    }
-
-    if (size1 < size2) {
-        DEBUG_RETURN(-1);
-        return -1;
-    }
-    else if (size1 > size2) {
-        DEBUG_RETURN(1);
-        return 1;
-    }
-
-    // Queues are equal.
-    DEBUG_RETURN(0);
-    return 0;
+    DEBUG_RETURN(ret);
+    return ret;
 }
 
 } // namespace cxx
