@@ -1,0 +1,8 @@
+strqueue_new()
+strqueue_new returns 0
+strqueue_insert_at(0, 0, "napis")
+strqueue_insert_at done
+strqueue_get_at(0, 0)
+strqueue_get_at returns "napis"
+strqueue_delete(0)
+strqueue_delete done

@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include <string>
 #include <cstddef>
+#include <climits>
+#include <cassert>
 
 using StringQueue = std::unordered_map<unsigned long, std::deque<std::string>>;
 
@@ -73,6 +75,7 @@ namespace {
 unsigned long strqueue_new() {
     DEBUG_START();
     static unsigned long id = 0;
+    assert(id != ULLONG_MAX);
     get_queue()[id] = std::deque<std::string>();
     DEBUG_RETURN(id);
     return id++;
@@ -80,8 +83,11 @@ unsigned long strqueue_new() {
 
 void strqueue_delete(unsigned long id) {
     DEBUG_START(id);
-    get_queue().erase(id);
-    DEBUG_RETURN();
+    if (!get_queue().erase(id)) {
+        DEBUG_DNE(id);
+    } else {
+        DEBUG_RETURN();
+    }
 }
 
 size_t strqueue_size(unsigned long id) {
