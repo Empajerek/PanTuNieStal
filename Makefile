@@ -8,7 +8,7 @@ tests_ndb = strqueue_test_2_nodbg strqueue_test_1_nodbg
 
 .PHONY = clean all test
 
-all: clean $(tests) $(tests_ndb)
+all: $(tests) $(tests_ndb) test
 
 build/strqueue_dbg.o: strqueue.cpp
 	$(++) $(CPPFLAGS) -c -o $@ $<
@@ -36,6 +36,10 @@ strqueue_test_2_dbg_b: build/strqueue_dbg.o build/strqueue_test_2.o
 
 strqueue_test_2_nodbg: build/strqueue_test_2.o build/strqueue_nodbg.o
 	$(++) -o build/$@ $^
+
+test:
+	@echo "Running: tests"
+	@sh -c 'time -v ./tests/run_tests.sh | cowsay -f fox'
 
 clean:
 	rm -rf build/*

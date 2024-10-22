@@ -1,0 +1,154 @@
+strqueue_delete(0)
+strqueue_delete: queue 0 does not exist
+strqueue_insert_at(0, 0, "a")
+strqueue_insert_at: queue 0 does not exist
+strqueue_get_at(0, 0)
+strqueue_get_at: queue 0 does not exist
+strqueue_get_at returns NULL
+strqueue_remove_at(0, 0)
+strqueue_remove_at: queue 0 does not exist
+strqueue_comp(0, 122432)
+strqueue_comp: queue 0 does not exist
+strqueue_comp: queue 122432 does not exist
+strqueue_comp returns 0
+strqueue_size(0)
+strqueue_size: queue 0 does not exist
+strqueue_size returns 0
+strqueue_clear(0)
+strqueue_clear: queue 0 does not exist
+strqueue_new()
+strqueue_new returns 0
+strqueue_size(0)
+strqueue_size returns 0
+strqueue_insert_at(0, 0, "a")
+strqueue_insert_at done
+strqueue_size(0)
+strqueue_size returns 1
+strqueue_insert_at(0, 1, "b")
+strqueue_insert_at done
+strqueue_size(0)
+strqueue_size returns 2
+strqueue_insert_at(0, 2, "c")
+strqueue_insert_at done
+strqueue_size(0)
+strqueue_size returns 3
+strqueue_comp(0, 0)
+strqueue_comp returns 0
+strqueue_comp(0, 1)
+strqueue_comp: queue 1 does not exist
+strqueue_comp returns 1
+strqueue_get_at(0, 0)
+strqueue_get_at returns "a"
+strqueue_get_at(0, 1)
+strqueue_get_at returns "b"
+strqueue_get_at(0, 2)
+strqueue_get_at returns "c"
+strqueue_get_at(0, 3)
+strqueue_get_at: queue 0 does not contain string at position 3
+strqueue_get_at returns NULL
+strqueue_remove_at(0, 1)
+strqueue_remove_at done
+strqueue_size(0)
+strqueue_size returns 2
+strqueue_get_at(0, 0)
+strqueue_get_at returns "a"
+strqueue_get_at(0, 1)
+strqueue_get_at returns "c"
+strqueue_clear(0)
+strqueue_clear done
+strqueue_size(0)
+strqueue_size returns 0
+strqueue_get_at(0, 0)
+strqueue_get_at: queue 0 does not contain string at position 0
+strqueue_get_at returns NULL
+strqueue_delete(0)
+strqueue_delete done
+strqueue_size(0)
+strqueue_size: queue 0 does not exist
+strqueue_size returns 0
+strqueue_get_at(0, 0)
+strqueue_get_at: queue 0 does not exist
+strqueue_get_at returns NULL
+strqueue_comp(0, 0)
+strqueue_comp: queue 0 does not exist
+strqueue_comp: queue 0 does not exist
+strqueue_comp returns 0
+strqueue_new()
+strqueue_new returns 1
+strqueue_insert_at(1, 0, "a")
+strqueue_insert_at done
+strqueue_insert_at(1, 0, "a")
+strqueue_insert_at done
+strqueue_comp(0, 1)
+strqueue_comp: queue 0 does not exist
+strqueue_comp returns -1
+strqueue_comp(1, 0)
+strqueue_comp: queue 0 does not exist
+strqueue_comp returns 1
+strqueue_comp(1, 1)
+strqueue_comp returns 0
+strqueue_clear(1)
+strqueue_clear done
+strqueue_comp(0, 1)
+strqueue_comp: queue 0 does not exist
+strqueue_comp returns 0
+strqueue_size(1)
+strqueue_size returns 0
+strqueue_new()
+strqueue_new returns 2
+strqueue_insert_at(1, 0, "What")
+strqueue_insert_at done
+strqueue_insert_at(1, 1, "is")
+strqueue_insert_at done
+strqueue_insert_at(1, 2, "the")
+strqueue_insert_at done
+strqueue_insert_at(1, 3, "airspeed")
+strqueue_insert_at done
+strqueue_insert_at(1, 4, "velocity")
+strqueue_insert_at done
+strqueue_insert_at(1, 5, "of")
+strqueue_insert_at done
+strqueue_insert_at(1, 6, "an")
+strqueue_insert_at done
+strqueue_insert_at(1, 7, "unladen")
+strqueue_insert_at done
+strqueue_insert_at(1, 8, "swift")
+strqueue_insert_at done
+strqueue_size(1)
+strqueue_size returns 9
+strqueue_insert_at(2, 0, "What")
+strqueue_insert_at done
+strqueue_insert_at(2, 1, "is")
+strqueue_insert_at done
+strqueue_insert_at(2, 2, "the")
+strqueue_insert_at done
+strqueue_insert_at(2, 3, "airspeed")
+strqueue_insert_at done
+strqueue_insert_at(2, 4, "velocity")
+strqueue_insert_at done
+strqueue_insert_at(2, 5, "of")
+strqueue_insert_at done
+strqueue_insert_at(2, 6, "an")
+strqueue_insert_at done
+strqueue_insert_at(2, 7, "unladen")
+strqueue_insert_at done
+strqueue_insert_at(2, 8, "swallow")
+strqueue_insert_at done
+strqueue_size(2)
+strqueue_size returns 9
+strqueue_comp(1, 2)
+strqueue_comp returns 1
+strqueue_remove_at(1, 5)
+strqueue_remove_at done
+strqueue_comp(1, 2)
+strqueue_comp returns -1
+strqueue_remove_at(2, 5)
+strqueue_remove_at done
+strqueue_comp(1, 2)
+strqueue_comp returns 1
+strqueue_remove_at(1, 7)
+strqueue_remove_at done
+strqueue_insert_at(1, 7, "swallow")
+strqueue_insert_at done
+strqueue_comp(1, 2)
+strqueue_comp returns 0

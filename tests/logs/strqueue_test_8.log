@@ -1,0 +1,52 @@
+strqueue_new()
+strqueue_new returns 0
+strqueue_delete(1)
+strqueue_delete: queue 1 does not exist
+strqueue_insert_at(0, 0, "c")
+strqueue_insert_at done
+strqueue_delete(0)
+strqueue_delete done
+strqueue_new()
+strqueue_new returns 1
+strqueue_size(1)
+strqueue_size returns 0
+strqueue_size(2)
+strqueue_size: queue 2 does not exist
+strqueue_size returns 0
+strqueue_insert_at(1, 0, "a")
+strqueue_insert_at done
+strqueue_insert_at(1, 0, "b")
+strqueue_insert_at done
+strqueue_size(1)
+strqueue_size returns 2
+strqueue_insert_at(2, 0, "a")
+strqueue_insert_at: queue 2 does not exist
+strqueue_insert_at(1, 0, NULL)
+strqueue_insert_at failed
+strqueue_remove_at(2, 0)
+strqueue_remove_at: queue 2 does not exist
+strqueue_remove_at(1, 11)
+strqueue_remove_at: queue 1 does not contain string at position 11
+strqueue_remove_at(1, 1)
+strqueue_remove_at done
+strqueue_get_at(0, 0)
+strqueue_get_at: queue 0 does not exist
+strqueue_get_at returns NULL
+strqueue_get_at(1, 11)
+strqueue_get_at: queue 1 does not contain string at position 11
+strqueue_get_at returns NULL
+strqueue_get_at(1, 0)
+strqueue_get_at returns "b"
+strqueue_clear(0)
+strqueue_clear: queue 0 does not exist
+strqueue_clear(1)
+strqueue_clear done
+strqueue_comp(1, 1)
+strqueue_comp returns 0
+strqueue_comp(1, 0)
+strqueue_comp: queue 0 does not exist
+strqueue_comp returns 0
+strqueue_comp(2, 0)
+strqueue_comp: queue 2 does not exist
+strqueue_comp: queue 0 does not exist
+strqueue_comp returns 0

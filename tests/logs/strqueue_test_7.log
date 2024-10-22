@@ -1,0 +1,30 @@
+strqueue_new()
+strqueue_new returns 0
+strqueue_insert_at(0, 0, "Hello world!")
+strqueue_insert_at done
+strqueue_get_at(0, 0)
+strqueue_get_at returns "Hello world!"
+strqueue_get_at(0, 0)
+strqueue_get_at returns "Hello world!"
+strqueue_insert_at(0, 1, "I love ice cream!")
+strqueue_insert_at done
+strqueue_insert_at(0, 2, "I love ice cream!")
+strqueue_insert_at done
+strqueue_insert_at(0, 3, "I love ice cream!")
+strqueue_insert_at done
+strqueue_insert_at(0, 4, "I love ice cream!")
+strqueue_insert_at done
+strqueue_insert_at(0, 5, "I love ice cream!")
+strqueue_insert_at done
+strqueue_insert_at(0, 6, "I love ice cream!")
+strqueue_insert_at done
+strqueue_insert_at(0, 7, "I love ice cream!")
+strqueue_insert_at done
+strqueue_insert_at(0, 8, "I love ice cream!")
+strqueue_insert_at done
+strqueue_insert_at(0, 9, "I love ice cream!")
+strqueue_insert_at done
+strqueue_insert_at(0, 10, "I love ice cream!")
+strqueue_insert_at done
+strqueue_delete(0)
+strqueue_delete done
