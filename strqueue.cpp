@@ -8,16 +8,15 @@
 #include <cassert>
 
 using StringQueue = std::unordered_map<unsigned long, std::deque<std::string>>;
-
 namespace cxx {
 
 namespace {
 #ifndef NDEBUG
-    #define DEBUG_FAILED() cerr() << __func__ << " failed\n"
-    #define DEBUG_DNE(x) cerr() << __func__ << ": queue " << x << " does not exist\n"
-    #define DEBUG_DNC(x, y) cerr() << __func__ << ": queue " << x << " does not contain string at position " << y << "\n"
-    #define DEBUG_START(...) cerr() << __func__ << "(" << argToStr(__VA_ARGS__) << ")\n"
-    #define DEBUG_RETURN(x) cerr() << __func__ << returnStr(x) << "\n"
+    #define DEBUG_FAILED() std::cerr << __func__ << " failed\n"
+    #define DEBUG_DNE(x) std::cerr << __func__ << ": queue " << x << " does not exist\n"
+    #define DEBUG_DNC(x, y) std::cerr << __func__ << ": queue " << x << " does not contain string at position " << y << "\n"
+    #define DEBUG_START(...) std::cerr << __func__ << "(" << argToStr(__VA_ARGS__) << ")\n"
+    #define DEBUG_RETURN(x) std::cerr << __func__ << returnStr(x) << "\n"
 
     std::string argToStr() {
         return "";
@@ -43,19 +42,10 @@ namespace {
     std::string returnStr() {
         return " done";
     }
-
+    
     template<typename Arg>
     std::string returnStr(Arg arg) {
         return " returns " + argToStr(arg);
-    }
-
-    static std::ostream& cerr() {
-        static bool is_init = false;
-        if (!is_init) {
-            is_init = true;
-            static std::ios_base::Init __io_init;
-        }
-        return std::cerr;
     }
 
 #else
@@ -65,7 +55,7 @@ namespace {
     #define DEBUG_START(...) {}
     #define DEBUG_RETURN(...) {}
 #endif
-
+    // This assures that the problem of static initialization doesn't occur.
     static StringQueue& get_queue() {
         static StringQueue queue;
         return queue;
@@ -174,21 +164,21 @@ int strqueue_comp(unsigned long id1, unsigned long id2) {
 
     auto iter1 = get_queue().find(id1);
     auto iter2 = get_queue().find(id2);
-
-    const auto& queue1 = iter1->second;
-    const auto& queue2 = iter2->second;
-
+    // Check if the queues aren't empty return proper error.
     if (iter1 == get_queue().end() && iter2 == get_queue().end()) {
         DEBUG_DNE(id1);
         DEBUG_DNE(id2);
         ret = 0;
     } else if (iter1 == get_queue().end()) {
         DEBUG_DNE(id1);
-        ret = queue2.size() ? -1 : 0;
+        ret = iter2->second.size() ? -1 : 0;
     } else if (iter2 == get_queue().end()) {
         DEBUG_DNE(id2);
-        ret = queue1.size() ? 1 : 0;
+        ret = iter1->second.size() ? 1 : 0;
     } else {
+        const auto& queue1 = iter1->second;
+        const auto& queue2 = iter2->second;
+
         // Both get_queue() exist and we begin to compare them lexicographically.
         if (queue1 < queue2)
             ret = -1;
